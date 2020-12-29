@@ -1,0 +1,21 @@
+{
+  "manifest_version": 2,
+  "name": "block-request",
+  "description": "",
+  "author": "Johann Perozo",
+  "version": "1.0.0",
+  "browser_action": {},
+  "background": {
+    "scripts": [
+      "background.js"
+    ],
+    "persistent": true
+  },
+  "permissions": [
+    "webRequest",
+    "webRequestBlocking",
+    "*://*/*",
+    "http://*/",
+    "https://*/"
+  ]
+}
