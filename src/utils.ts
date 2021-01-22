@@ -3,7 +3,13 @@ export const checkFavIcon = (url: string): boolean => {
 };
 
 export const checkMedia = (url: string): boolean => {
-  return containsWords(url, ["blob", "mp4", "webm"]);
+  return containsWords(url, [
+    "blob",
+    "mp4",
+    "webm",
+    "googlevideo",
+    "data:image",
+  ]);
 };
 
 const containsWords = (str: string, words: string[]): boolean => {
