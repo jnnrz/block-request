@@ -9,6 +9,9 @@ export const checkMedia = (url: string): boolean => {
     "webm",
     "googlevideo",
     "data:image",
+    "m3u8",
+    "mp3",
+    "stream",
   ]);
 };
 
