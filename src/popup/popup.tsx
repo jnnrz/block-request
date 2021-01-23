@@ -1,5 +1,6 @@
 import React, { FunctionComponent, useState, useEffect } from "react";
 import { browser } from "webextension-polyfill-ts";
+import { Toggle } from "react-toggle-component";
 import { BlockStatus } from "@src/types";
 
 import styles from "./popup.scss";
@@ -66,20 +67,32 @@ const Popup: FunctionComponent = () => {
       <div className={styles["control-wrapper"]}>
         <div className={styles["control"]}>
           <label htmlFor="images">Images</label>
-          <input
-            type="checkbox"
+          <Toggle
+            leftBackgroundColor="#c3c3c3"
+            rightBackgroundColor="#51d7d0"
+            rightBorderColor="rgba(54, 181, 169, 255)"
+            leftKnobColor="#fff"
+            rightKnobColor="#fff"
+            borderWidth="1px"
             name="images"
             checked={blockImages}
-            onChange={handleBlockImages}
+            controlled={true}
+            onToggle={handleBlockImages}
           />
         </div>
         <div className={styles["control"]}>
           <label htmlFor="media">Media</label>
-          <input
-            type="checkbox"
+          <Toggle
+            leftBackgroundColor="#c3c3c3"
+            rightBackgroundColor="#51d7d0"
+            rightBorderColor="rgba(54, 181, 169, 255)"
+            leftKnobColor="#fff"
+            rightKnobColor="#fff"
+            borderWidth="1px"
             name="media"
             checked={blockMedia}
-            onChange={handleBlockMedia}
+            controlled={true}
+            onToggle={handleBlockMedia}
           />
         </div>
         {/*<div className={styles["control"]}>
@@ -93,12 +106,18 @@ const Popup: FunctionComponent = () => {
         </div>*/}
 
         <div className={styles["control"]}>
-          <label htmlFor="other">Javascript</label>
-          <input
-            type="checkbox"
-            name="other"
+          <label htmlFor="js">Javascript</label>
+          <Toggle
+            leftBackgroundColor="#c3c3c3"
+            rightBackgroundColor="#51d7d0"
+            rightBorderColor="rgba(54, 181, 169, 255)"
+            leftKnobColor="#fff"
+            rightKnobColor="#fff"
+            borderWidth="1px"
+            name="js"
             checked={blockJs}
-            onChange={handleBlockJs}
+            controlled={true}
+            onToggle={handleBlockJs}
           />
         </div>
 
