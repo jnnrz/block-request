@@ -2,13 +2,10 @@
 import { browser, Runtime, WebRequest } from "webextension-polyfill-ts";
 import { BlockStatus } from "./types";
 import {checkMedia} from "./utils";
-import OnInstalledDetailsType = Runtime.OnInstalledDetailsType;
 
 let blockImage = false;
 let blockMedia = false;
-//let blockOther = false;
 let blockJs = false;
-//let blockCss = false;
 
 const main = () => {
   browser.runtime.onInstalled.addListener(onInstall);
@@ -64,18 +61,6 @@ const receiveMessage = async (message: any, sender: Runtime.MessageSender) => {
       await browser.storage.local.set({ ["status"]: nw });
       break;
 
-    /*case BlockStatus.OTHER_BLOCK:
-      blockOther = true;
-      nw = { ...status, other: true };
-      await browser.storage.local.set({ ["status"]: nw });
-      break;
-
-    case BlockStatus.OTHER_UNBLOCK:
-      blockOther = false;
-      nw = { ...status, other: false };
-      await browser.storage.local.set({ ["status"]: nw });
-      break;*/
-
     case BlockStatus.JS_BLOCK:
       blockJs = true;
       nw = { ...status, js: true };
@@ -87,18 +72,6 @@ const receiveMessage = async (message: any, sender: Runtime.MessageSender) => {
       nw = { ...status, js: false };
       await browser.storage.local.set({ ["status"]: nw });
       break;
-
-    /*case BlockStatus.CSS_BLOCK:
-      blockCss = true;
-      nw = { ...status, css: true };
-      await browser.storage.local.set({ ["status"]: nw });
-      break;
-
-    case BlockStatus.CSS_UNBLOCK:
-      blockCss = false;
-      nw = { ...status, css: false };
-      await browser.storage.local.set({ ["status"]: nw });
-      break;*/
   }
 };
 
@@ -133,7 +106,7 @@ const onRequest = (details: WebRequest.OnHeadersReceivedDetailsType) => {
   }
 };
 
-const onInstall = async (details: OnInstalledDetailsType) => {
+const onInstall = async (details: Runtime.OnInstalledDetailsType) => {
   const { status } = await browser.storage.local.get("status");
 
   blockImage = status.images;
