@@ -1,13 +1,27 @@
-﻿
+﻿@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;600&display=swap');
+
 .wrapper {
   display: flex;
   flex-direction: column;
+  font-family: Inter, Roboto, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 
   .control-wrapper {
 
     .control {
       display: flex;
       justify-content: space-between;
+      align-items: center;
+      padding: 3px 0;
+
+      img {
+        margin-right: 5px;
+      }
+
+      label {
+        font-size: 14px;
+        color: #555;
+        margin-right: 10px;
+      }
     }
 
   }
