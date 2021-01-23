@@ -1,0 +1,14 @@
+﻿
+.wrapper {
+  display: flex;
+  flex-direction: column;
+
+  .control-wrapper {
+
+    .control {
+      display: flex;
+      justify-content: space-between;
+    }
+
+  }
+}
