@@ -1,15 +1,21 @@
+/* eslint-disable prettier/prettier */
 import { browser, Runtime, WebRequest } from "webextension-polyfill-ts";
 import { BlockStatus } from "./types";
-import { checkFavIcon, checkMedia } from "./utils";
+import {checkMedia} from "./utils";
+import OnInstalledDetailsType = Runtime.OnInstalledDetailsType;
 
 let blockImage = false;
 let blockMedia = false;
-let blockOther = false;
+//let blockOther = false;
+let blockJs = false;
+//let blockCss = false;
 
 const main = () => {
+  browser.runtime.onInstalled.addListener(onInstall);
+
   browser.runtime.onMessage.addListener(receiveMessage);
-  browser.webRequest.onBeforeRequest.addListener(
-    beforeRequest,
+
+  browser.webRequest.onHeadersReceived.addListener(onRequest,
     {
       urls: ["<all_urls>"],
       types: [
@@ -19,10 +25,13 @@ const main = () => {
         "websocket",
         "imageset",
         "other",
+        "script",
+        "stylesheet",
+        "main_frame",
+        "sub_frame"
       ],
     },
-    ["blocking"]
-  );
+    ["blocking", "responseHeaders"]);
 };
 
 const receiveMessage = async (message: any, sender: Runtime.MessageSender) => {
@@ -55,7 +64,7 @@ const receiveMessage = async (message: any, sender: Runtime.MessageSender) => {
       await browser.storage.local.set({ ["status"]: nw });
       break;
 
-    case BlockStatus.OTHER_BLOCK:
+    /*case BlockStatus.OTHER_BLOCK:
       blockOther = true;
       nw = { ...status, other: true };
       await browser.storage.local.set({ ["status"]: nw });
@@ -65,21 +74,35 @@ const receiveMessage = async (message: any, sender: Runtime.MessageSender) => {
       blockOther = false;
       nw = { ...status, other: false };
       await browser.storage.local.set({ ["status"]: nw });
+      break;*/
+
+    case BlockStatus.JS_BLOCK:
+      blockJs = true;
+      nw = { ...status, js: true };
+      await browser.storage.local.set({ ["status"]: nw });
       break;
+
+    case BlockStatus.JS_UNBLOCK:
+      blockJs = false;
+      nw = { ...status, js: false };
+      await browser.storage.local.set({ ["status"]: nw });
+      break;
+
+    /*case BlockStatus.CSS_BLOCK:
+      blockCss = true;
+      nw = { ...status, css: true };
+      await browser.storage.local.set({ ["status"]: nw });
+      break;
+
+    case BlockStatus.CSS_UNBLOCK:
+      blockCss = false;
+      nw = { ...status, css: false };
+      await browser.storage.local.set({ ["status"]: nw });
+      break;*/
   }
 };
 
-const beforeRequest = (details: WebRequest.OnBeforeRequestDetailsType) => {
-  if (blockImage) {
-    if (details.type === "image" || details.type === "imageset") {
-      if (checkFavIcon(details.url)) {
-        console.log("favicon: " + details.url);
-        return { cancel: false };
-      }
-      console.log("image: " + details.url);
-      return { cancel: true };
-    }
-  }
+const onRequest = (details: WebRequest.OnHeadersReceivedDetailsType) => {
 
   if (blockMedia) {
     if (details.type === "media" || checkMedia(details.url)) {
@@ -87,6 +110,35 @@ const beforeRequest = (details: WebRequest.OnBeforeRequestDetailsType) => {
       return { cancel: true };
     }
   }
+
+  if (blockImage || blockJs) {
+
+    if (details.type === "image" || details.type === "imageset") {
+      return { cancel: true };
+    }
+
+    const headers = details.responseHeaders;
+    const cspHeader = headers
+      .filter((header) => header.name.toLowerCase() === "content-security-policy");
+
+    const previousValue = cspHeader.length > 0 ? cspHeader[0].value : "";
+
+    const newCsp =
+      (blockImage ? "img-src 'none'; " : (blockJs ? "script-src 'none'; " : "")) + previousValue;
+
+    console.log(newCsp)
+
+    headers.push({"name": "Content-Security-Policy", "value": newCsp});
+    return { responseHeaders: headers };
+  }
+};
+
+const onInstall = async (details: OnInstalledDetailsType) => {
+  const { status } = await browser.storage.local.get("status");
+
+  blockImage = status.images;
+  blockMedia = status.media;
+  blockJs = status.js;
 };
 
 main();
