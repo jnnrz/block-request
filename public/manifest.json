@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "block-request",
-  "description": "",
+  "description": "Blocks images, media (video, audio, etc) and javascript",
   "author": "Johann Perozo",
   "version": "1.0.0",
   "browser_action": {
