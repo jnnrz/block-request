@@ -1,7 +1,6 @@
-/* eslint-disable prettier/prettier */
-import { browser, Runtime, WebRequest } from "webextension-polyfill-ts";
+import { browser, Runtime, WebRequest, Tabs } from "webextension-polyfill-ts";
 import { BlockStatus } from "./types";
-import {checkMedia} from "./utils";
+import { checkMedia } from "./utils";
 
 let blockImage = false;
 let blockMedia = false;
@@ -12,7 +11,8 @@ const main = () => {
 
   browser.runtime.onMessage.addListener(receiveMessage);
 
-  browser.webRequest.onHeadersReceived.addListener(onRequest,
+  browser.webRequest.onHeadersReceived.addListener(
+    onRequest,
     {
       urls: ["<all_urls>"],
       types: [
@@ -25,10 +25,11 @@ const main = () => {
         "script",
         "stylesheet",
         "main_frame",
-        "sub_frame"
+        "sub_frame",
       ],
     },
-    ["blocking", "responseHeaders"]);
+    ["blocking", "responseHeaders"]
+  );
 };
 
 const receiveMessage = async (message: any, sender: Runtime.MessageSender) => {
@@ -75,8 +76,7 @@ const receiveMessage = async (message: any, sender: Runtime.MessageSender) => {
   }
 };
 
-const onRequest = (details: WebRequest.OnHeadersReceivedDetailsType) => {
-
+const onRequest = async (details: WebRequest.OnHeadersReceivedDetailsType) => {
   if (blockMedia) {
     if (details.type === "media" || checkMedia(details.url)) {
       console.log("media: " + details.url);
@@ -85,23 +85,24 @@ const onRequest = (details: WebRequest.OnHeadersReceivedDetailsType) => {
   }
 
   if (blockImage || blockJs) {
-
     if (details.type === "image" || details.type === "imageset") {
       return { cancel: true };
     }
 
     const headers = details.responseHeaders;
-    const cspHeader = headers
-      .filter((header) => header.name.toLowerCase() === "content-security-policy");
+    const cspHeader = headers.filter(
+      (header) => header.name.toLowerCase() === "content-security-policy"
+    );
 
     const previousValue = cspHeader.length > 0 ? cspHeader[0].value : "";
 
     const newCsp =
-      (blockImage ? "img-src 'none'; " : (blockJs ? "script-src 'none'; " : "")) + previousValue;
+      (blockImage ? "img-src 'none'; " : blockJs ? "script-src 'none'; " : "") +
+      previousValue;
 
-    console.log(newCsp)
+    console.log(newCsp);
 
-    headers.push({"name": "Content-Security-Policy", "value": newCsp});
+    headers.push({ name: "Content-Security-Policy", value: newCsp });
     return { responseHeaders: headers };
   }
 };
