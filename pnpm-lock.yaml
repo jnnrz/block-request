@@ -8,7 +8,7 @@ devDependencies:
   '@typescript-eslint/parser': 4.11.1_eslint@7.16.0+typescript@4.1.3
   '@webpack-cli/init': 1.1.0_d8fb156d71aac313eebb18c49c645dd2
   copy-webpack-plugin: 7.0.0_webpack@5.11.0
-  css-loader: 5.0.1_webpack@5.11.0
+  css-loader: 5.2.0_webpack@5.11.0
   eslint: 7.16.0
   eslint-config-prettier: 7.1.0_eslint@7.16.0
   eslint-plugin-prettier: 3.3.0_eslint@7.16.0+prettier@2.2.1
@@ -16,7 +16,7 @@ devDependencies:
   file-loader: 6.2.0_webpack@5.11.0
   node-sass: 5.0.0
   prettier: 2.2.1
-  sass-loader: 10.1.0_node-sass@5.0.0+webpack@5.11.0
+  sass-loader: 11.0.1_node-sass@5.0.0+webpack@5.11.0
   style-loader: 2.0.0_webpack@5.11.0
   ts-loader: 8.0.12_typescript@4.1.3+webpack@5.11.0
   typescript: 4.1.3
@@ -1195,7 +1195,7 @@ packages:
     dependencies:
       follow-redirects: 1.5.10
       is-buffer: 2.0.5
-    deprecated: 'Critical security vulnerability fixed in v0.21.1. For more information, see https://github.com/axios/axios/pull/3410'
+    deprecated: Critical security vulnerability fixed in v0.21.1. For more information, see https://github.com/axios/axios/pull/3410
     dev: true
     resolution:
       integrity: sha512-0BfJq4NSfQXd+SkFdrvFbG7addhYSBA2mQwISr46pD6E5iqkWg02RAs8vyTT/j0RTnoYmeXauBuSv1qKwR179g==
@@ -1659,6 +1659,10 @@ packages:
     dev: true
     resolution:
       integrity: sha512-puCDz0CzydiSYOrnXpz/PKd69zRrribezjtE9yd4zvytoRc8+RY/KJPvtPFKZS3E3wP6neGyMe0vOTlHO5L3Pw==
+  /colorette/1.2.2:
+    dev: true
+    resolution:
+      integrity: sha512-MKGMzyfeuutC/ZJ1cba9NqcNpfeqMUcYmyF1ZFY6/Cn7CNSAKx6a+s48sqLqyAiZuaP2TcqMhoo+dlwFnVxT9w==
   /colors/1.4.0:
     dev: true
     engines:
@@ -1834,17 +1838,17 @@ packages:
     dev: false
     resolution:
       integrity: sha512-PJF0SpJT+WdbVVt0AOYp9C8GnuruRlL/UFW7932nLWmFLQTaWEzTBQEx7/hn4BuV+WON75iAViSUJLiU3PKbpA==
-  /css-loader/5.0.1_webpack@5.11.0:
+  /css-loader/5.2.0_webpack@5.11.0:
     dependencies:
       camelcase: 6.2.0
       cssesc: 3.0.0
-      icss-utils: 5.1.0_postcss@8.2.1
+      icss-utils: 5.1.0_postcss@8.2.9
       loader-utils: 2.0.0
-      postcss: 8.2.1
-      postcss-modules-extract-imports: 3.0.0_postcss@8.2.1
-      postcss-modules-local-by-default: 4.0.0_postcss@8.2.1
-      postcss-modules-scope: 3.0.0_postcss@8.2.1
-      postcss-modules-values: 4.0.0_postcss@8.2.1
+      postcss: 8.2.9
+      postcss-modules-extract-imports: 3.0.0_postcss@8.2.9
+      postcss-modules-local-by-default: 4.0.0_postcss@8.2.9
+      postcss-modules-scope: 3.0.0_postcss@8.2.9
+      postcss-modules-values: 4.0.0_postcss@8.2.9
       postcss-value-parser: 4.1.0
       schema-utils: 3.0.0
       semver: 7.3.4
@@ -1855,7 +1859,7 @@ packages:
     peerDependencies:
       webpack: ^4.27.0 || ^5.0.0
     resolution:
-      integrity: sha512-cXc2ti9V234cq7rJzFKhirb2L2iPy8ZjALeVJAozXYz9te3r4eqLSixNAbMDJSgJEQywqXzs8gonxaboeKqwiw==
+      integrity: sha512-MfRo2MjEeLXMlUkeUwN71Vx5oc6EJnx5UQ4Yi9iUtYQvrPtwLUucYptz0hc6n++kdNcyF5olYBS4vPjJDAcLkw==
   /css-to-react-native/3.0.0:
     dependencies:
       camelize: 1.0.0
@@ -3576,9 +3580,9 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==
-  /icss-utils/5.1.0_postcss@8.2.1:
+  /icss-utils/5.1.0_postcss@8.2.9:
     dependencies:
-      postcss: 8.2.1
+      postcss: 8.2.9
     dev: true
     engines:
       node: ^10 || ^12 || >= 14
@@ -4764,13 +4768,13 @@ packages:
       react-dom: '*'
     resolution:
       integrity: sha512-ENPIyNzANQRyYVvb62ajDd7PAyIgS2LIUnT9ewih4yrXSZX4hKoUwssy8WjUH++kEOA5wUTMgNnV7ko5n34kUA==
-  /nanoid/3.1.20:
+  /nanoid/3.1.22:
     dev: true
     engines:
       node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1
     hasBin: true
     resolution:
-      integrity: sha512-a1cQNyczgKbLX9jwbS/+d7W8fX/RfgYR7lVWwWOGIPNgK2m0MWvrGF6/m4kk6U3QcFMnZf3RIhL0v2Jgh/0Uxw==
+      integrity: sha512-/2ZUaJX2ANuLtTvqTlgqBQNJoQO398KyJgZloL0PZkC0dpysjncRUPsFe3DUPzz/y3h+u7C46np8RMuvF3jsSQ==
   /nanomatch/1.2.13:
     dependencies:
       arr-diff: 4.0.0
@@ -5418,9 +5422,9 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha1-AerA/jta9xoqbAL+q7jB/vfgDqs=
-  /postcss-modules-extract-imports/3.0.0_postcss@8.2.1:
+  /postcss-modules-extract-imports/3.0.0_postcss@8.2.9:
     dependencies:
-      postcss: 8.2.1
+      postcss: 8.2.9
     dev: true
     engines:
       node: ^10 || ^12 || >= 14
@@ -5428,10 +5432,10 @@ packages:
       postcss: ^8.1.0
     resolution:
       integrity: sha512-bdHleFnP3kZ4NYDhuGlVK+CMrQ/pqUm8bx/oGL93K6gVwiclvX5x0n76fYMKuIGKzlABOy13zsvqjb0f92TEXw==
-  /postcss-modules-local-by-default/4.0.0_postcss@8.2.1:
+  /postcss-modules-local-by-default/4.0.0_postcss@8.2.9:
     dependencies:
-      icss-utils: 5.1.0_postcss@8.2.1
-      postcss: 8.2.1
+      icss-utils: 5.1.0_postcss@8.2.9
+      postcss: 8.2.9
       postcss-selector-parser: 6.0.4
       postcss-value-parser: 4.1.0
     dev: true
@@ -5441,9 +5445,9 @@ packages:
       postcss: ^8.1.0
     resolution:
       integrity: sha512-sT7ihtmGSF9yhm6ggikHdV0hlziDTX7oFoXtuVWeDd3hHObNkcHRo9V3yg7vCAY7cONyxJC/XXCmmiHHcvX7bQ==
-  /postcss-modules-scope/3.0.0_postcss@8.2.1:
+  /postcss-modules-scope/3.0.0_postcss@8.2.9:
     dependencies:
-      postcss: 8.2.1
+      postcss: 8.2.9
       postcss-selector-parser: 6.0.4
     dev: true
     engines:
@@ -5452,10 +5456,10 @@ packages:
       postcss: ^8.1.0
     resolution:
       integrity: sha512-hncihwFA2yPath8oZ15PZqvWGkWf+XUfQgUGamS4LqoP1anQLOsOJw0vr7J7IwLpoY9fatA2qiGUGmuZL0Iqlg==
-  /postcss-modules-values/4.0.0_postcss@8.2.1:
+  /postcss-modules-values/4.0.0_postcss@8.2.9:
     dependencies:
-      icss-utils: 5.1.0_postcss@8.2.1
-      postcss: 8.2.1
+      icss-utils: 5.1.0_postcss@8.2.9
+      postcss: 8.2.9
     dev: true
     engines:
       node: ^10 || ^12 || >= 14
@@ -5477,16 +5481,16 @@ packages:
   /postcss-value-parser/4.1.0:
     resolution:
       integrity: sha512-97DXOFbQJhk71ne5/Mt6cOu6yxsSfM0QGQyl0L25Gca4yGWEGJaig7l7gbCX623VqTBNGLRLaVUCnNkcedlRSQ==
-  /postcss/8.2.1:
+  /postcss/8.2.9:
     dependencies:
-      colorette: 1.2.1
-      nanoid: 3.1.20
+      colorette: 1.2.2
+      nanoid: 3.1.22
       source-map: 0.6.1
     dev: true
     engines:
       node: ^10 || ^12 || >=14
     resolution:
-      integrity: sha512-RhsqOOAQzTgh1UB/IZdca7F9WDb7SUCR2Vnv1x7DbvuuggQIpoDwjK+q0rzoPffhYvWNKX5JSwS4so4K3UC6vA==
+      integrity: sha512-b+TmuIL4jGtCHtoLi+G/PisuIl9avxs8IZMSmlABRwNz5RLUUACrC+ws81dcomz1nRezm5YPdXiMEzBEKgYn+Q==
   /prelude-ls/1.2.1:
     dev: true
     engines:
@@ -5878,7 +5882,7 @@ packages:
       tough-cookie: 2.5.0
       tunnel-agent: 0.6.0
       uuid: 3.4.0
-    deprecated: 'request has been deprecated, see https://github.com/request/request/issues/3142'
+    deprecated: request has been deprecated, see https://github.com/request/request/issues/3142
     dev: true
     engines:
       node: '>= 6'
@@ -5950,7 +5954,7 @@ packages:
     resolution:
       integrity: sha512-qYg9KP24dD5qka9J47d0aVky0N+b4fTU89LN9iDnjB5waksiC49rvMB0PrUJQGoTmH50XPiqOvAjDfaijGxYZw==
   /resolve-url/0.2.1:
-    deprecated: 'https://github.com/lydell/resolve-url#deprecated'
+    deprecated: https://github.com/lydell/resolve-url#deprecated
     dev: true
     resolution:
       integrity: sha1-LGN/53yJOv0qZj/iGqkIAGjiBSo=
@@ -6068,14 +6072,11 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-VFWDAHOe6mRuT4mZRd4eKE+d8Uedrk6Xnh7Sh9b4NGufQLQjOrvf/MQoOdx+0s92L89FeyUUNfU597j/3uNpag==
-  /sass-loader/10.1.0_node-sass@5.0.0+webpack@5.11.0:
+  /sass-loader/11.0.1_node-sass@5.0.0+webpack@5.11.0:
     dependencies:
       klona: 2.0.4
-      loader-utils: 2.0.0
       neo-async: 2.6.2
       node-sass: 5.0.0
-      schema-utils: 3.0.0
-      semver: 7.3.4
       webpack: 5.11.0_webpack-cli@4.3.0
     dev: true
     engines:
@@ -6084,7 +6085,7 @@ packages:
       fibers: '>= 3.1.0'
       node-sass: ^4.0.0 || ^5.0.0
       sass: ^1.3.0
-      webpack: ^4.36.0 || ^5.0.0
+      webpack: ^5.0.0
     peerDependenciesMeta:
       fibers:
         optional: true
@@ -6093,7 +6094,7 @@ packages:
       sass:
         optional: true
     resolution:
-      integrity: sha512-ZCKAlczLBbFd3aGAhowpYEy69Te3Z68cg8bnHHl6WnSCvnKpbM6pQrz957HWMa8LKVuhnD9uMplmMAHwGQtHeg==
+      integrity: sha512-Vp1LcP4slTsTNLEiDkTcm8zGN/XYYrZz2BZybQbliWA8eXveqA/AxsEjllQTpJbg2MzCsx/qNO48sHdZtOaxTw==
   /scheduler/0.20.1:
     dependencies:
       loose-envify: 1.4.0
@@ -7140,7 +7141,7 @@ packages:
     resolution:
       integrity: sha512-B0yRTzYdUCCn9n+F4+Gh4yIDtMQcaJsmYBDsTSG8g/OejKBodLQ2IHfN3bM7jUsRXndopT7OIXWdYqc1fjmV6g==
   /urix/0.1.0:
-    deprecated: 'Please see https://github.com/lydell/urix#deprecated'
+    deprecated: Please see https://github.com/lydell/urix#deprecated
     dev: true
     resolution:
       integrity: sha1-2pN/emLiH+wf0Y1Js1wpNQZ6bHI=
@@ -7642,7 +7643,7 @@ specifiers:
   '@typescript-eslint/parser': ^4.11.1
   '@webpack-cli/init': ^1.1.0
   copy-webpack-plugin: ^7.0.0
-  css-loader: ^5.0.1
+  css-loader: ^5.2.0
   eslint: ^7.16.0
   eslint-config-prettier: ^7.1.0
   eslint-plugin-prettier: ^3.3.0
@@ -7653,7 +7654,7 @@ specifiers:
   react: ^17.0.1
   react-dom: ^17.0.1
   react-toggle-component: ^3.0.8
-  sass-loader: ^10.1.0
+  sass-loader: ^11.0.1
   style-loader: ^2.0.0
   styled-components: ^5.2.1
   ts-loader: ^8.0.12
