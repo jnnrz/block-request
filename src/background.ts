@@ -96,11 +96,11 @@ const onRequest = async (details: WebRequest.OnHeadersReceivedDetailsType) => {
 
     const previousValue = cspHeader.length > 0 ? cspHeader[0].value : "";
 
-    const newCsp =
-      (blockImage ? "img-src 'none'; " : blockJs ? "script-src 'none'; " : "") +
-      previousValue;
+    const newCsp = `${blockImage ? "img-src 'none'; " : ""} ${
+      blockJs ? "script-src 'none'; " : ""
+    } ${previousValue}`;
 
-    console.log(newCsp);
+    console.log(`${newCsp}: ${details.url}`);
 
     headers.push({ name: "Content-Security-Policy", value: newCsp });
     return { responseHeaders: headers };
