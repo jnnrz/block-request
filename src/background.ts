@@ -43,7 +43,6 @@ const onRequest = async (details: WebRequest.OnHeadersReceivedDetailsType) => {
   const found = wl.includes(parsedUrl.hostname);
 
   if (found) {
-    console.log(found);
     return { cancel: false };
   }
 
@@ -94,7 +93,6 @@ const reloadStorage = async () => {
   isImagesBlocked = status.images;
   isMediaBlocked = status.media;
   isJavascriptBlocked = status.js;
-  console.log(whitelist);
   wl = whitelist ? whitelist : [];
 };
 
