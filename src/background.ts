@@ -4,7 +4,7 @@ import {
   WebRequest,
   Storage,
 } from "webextension-polyfill-ts";
-import { checkMedia } from "./utils";
+import { checkFavIcon, checkMedia } from "./utils";
 import StorageChange = Storage.StorageChange;
 
 let isImagesBlocked = false;
@@ -48,6 +48,10 @@ const onRequest = async (details: WebRequest.OnHeadersReceivedDetailsType) => {
 
   if (isImagesBlocked) {
     if (details.type === "image" || details.type === "imageset") {
+      if (checkFavIcon(details.url)) {
+        return { cancel: false };
+      }
+
       console.log("image: " + details.url);
       return { cancel: true };
     }
