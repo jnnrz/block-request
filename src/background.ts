@@ -1,15 +1,21 @@
-import { browser, Runtime, WebRequest, Tabs } from "webextension-polyfill-ts";
-import { BlockStatus } from "./types";
+import {
+  browser,
+  Runtime,
+  WebRequest,
+  Storage,
+} from "webextension-polyfill-ts";
 import { checkMedia } from "./utils";
+import StorageChange = Storage.StorageChange;
 
-let blockImage = false;
-let blockMedia = false;
-let blockJs = false;
+let isImagesBlocked = false;
+let isMediaBlocked = false;
+let isJavascriptBlocked = false;
+let whitelist = [];
 
 const main = () => {
   browser.runtime.onInstalled.addListener(onInstall);
 
-  browser.runtime.onMessage.addListener(receiveMessage);
+  browser.storage.onChanged.addListener(onStorageChange);
 
   browser.webRequest.onHeadersReceived.addListener(
     onRequest,
@@ -32,66 +38,22 @@ const main = () => {
   );
 };
 
-const receiveMessage = async (message: any, sender: Runtime.MessageSender) => {
-  const { status } = await browser.storage.local.get("status");
-
-  let nw;
-
-  switch (message) {
-    case BlockStatus.IMAGE_BLOCK:
-      blockImage = true;
-      nw = { ...status, images: true };
-      await browser.storage.local.set({ ["status"]: nw });
-      break;
-
-    case BlockStatus.IMAGE_UNBLOCK:
-      blockImage = false;
-      nw = { ...status, images: false };
-      await browser.storage.local.set({ ["status"]: nw });
-      break;
-
-    case BlockStatus.MEDIA_BLOCK:
-      blockMedia = true;
-      nw = { ...status, media: true };
-      await browser.storage.local.set({ ["status"]: nw });
-      break;
-
-    case BlockStatus.MEDIA_UNBLOCK:
-      blockMedia = false;
-      nw = { ...status, media: false };
-      await browser.storage.local.set({ ["status"]: nw });
-      break;
-
-    case BlockStatus.JS_BLOCK:
-      blockJs = true;
-      nw = { ...status, js: true };
-      await browser.storage.local.set({ ["status"]: nw });
-      break;
-
-    case BlockStatus.JS_UNBLOCK:
-      blockJs = false;
-      nw = { ...status, js: false };
-      await browser.storage.local.set({ ["status"]: nw });
-      break;
-  }
-};
-
 const onRequest = async (details: WebRequest.OnHeadersReceivedDetailsType) => {
-  if (blockMedia) {
+  if (isMediaBlocked) {
     if (details.type === "media" || checkMedia(details.url)) {
       console.log("media: " + details.url);
       return { cancel: true };
     }
   }
 
-  if (blockImage) {
+  if (isImagesBlocked) {
     if (details.type === "image" || details.type === "imageset") {
       console.log("image: " + details.url);
       return { cancel: true };
     }
   }
 
-  if (blockJs) {
+  if (isJavascriptBlocked) {
     const headers = details.responseHeaders;
     headers.push({
       name: "Content-Security-Policy",
@@ -103,11 +65,24 @@ const onRequest = async (details: WebRequest.OnHeadersReceivedDetailsType) => {
 };
 
 const onInstall = async (details: Runtime.OnInstalledDetailsType) => {
-  const { status } = await browser.storage.local.get("status");
+  await reloadStorage();
+};
 
-  blockImage = status.images;
-  blockMedia = status.media;
-  blockJs = status.js;
+const onStorageChange = async (
+  changes: { [p: string]: StorageChange },
+  areaName: string
+) => {
+  await reloadStorage();
+};
+
+const reloadStorage = async () => {
+  const { status } = await browser.storage.local.get("status");
+  const { wl } = await browser.storage.local.get("whitelist");
+
+  isImagesBlocked = status.images;
+  isMediaBlocked = status.media;
+  isJavascriptBlocked = status.js;
+  whitelist = wl;
 };
 
 main();

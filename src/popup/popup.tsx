@@ -1,50 +1,49 @@
 import React, { FunctionComponent, useState, useEffect } from "react";
 import { browser } from "webextension-polyfill-ts";
 import { Toggle } from "react-toggle-component";
-import { BlockStatus } from "@src/types";
 
 import pic from "../../public/pic.png";
 import vid from "../../public/video.png";
 import cod from "../../public/code.png";
-import mov from "../../public/movie.png";
 
 import styles from "./popup.scss";
 
 const Popup: FunctionComponent = () => {
   const [blockImages, setBlockImages] = useState<boolean>(false);
   const [blockMedia, setBlockMedia] = useState<boolean>(false);
-  const [blockJs, setBlockJs] = useState<boolean>(false);
+  const [blockJavascript, setBlockJavascript] = useState<boolean>(false);
 
   useEffect(async () => {
     const { status } = await browser.storage.local.get("status");
 
     setBlockImages(status.images);
     setBlockMedia(status.media);
-    setBlockJs(status.js);
+    setBlockJavascript(status.js);
   }, []);
 
   const handleBlockImages = async () => {
-    await browser.runtime.sendMessage(
-      null,
-      blockImages ? BlockStatus.IMAGE_UNBLOCK : BlockStatus.IMAGE_BLOCK
-    );
+    const { status } = await browser.storage.local.get("status");
+    await browser.storage.local.set({
+      ["status"]: { ...status, images: !blockImages },
+    });
+
     setBlockImages(!blockImages);
   };
 
   const handleBlockMedia = async () => {
-    await browser.runtime.sendMessage(
-      null,
-      blockMedia ? BlockStatus.MEDIA_UNBLOCK : BlockStatus.MEDIA_BLOCK
-    );
+    const { status } = await browser.storage.local.get("status");
+    await browser.storage.local.set({
+      ["status"]: { ...status, media: !blockMedia },
+    });
     setBlockMedia(!blockMedia);
   };
 
-  const handleBlockJs = async () => {
-    await browser.runtime.sendMessage(
-      null,
-      blockJs ? BlockStatus.JS_UNBLOCK : BlockStatus.JS_BLOCK
-    );
-    setBlockJs(!blockJs);
+  const handleBlockJavascript = async () => {
+    const { status } = await browser.storage.local.get("status");
+    await browser.storage.local.set({
+      ["status"]: { ...status, js: !blockJavascript },
+    });
+    setBlockJavascript(!blockJavascript);
   };
 
   return (
@@ -102,9 +101,9 @@ const Popup: FunctionComponent = () => {
             height="20px"
             knobWidth="14px"
             knobHeight="14px"
-            checked={blockJs}
+            checked={blockJavascript}
             controlled={true}
-            onToggle={handleBlockJs}
+            onToggle={handleBlockJavascript}
           />
         </div>
       </div>
