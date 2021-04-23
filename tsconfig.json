@@ -6,7 +6,7 @@
       "@components/*": ["src/components/*"],
       "@popup/*": ["src/popup/*"],
     },
-    "target": "es5",
+    "target": "esnext",
     "module": "commonjs",
     "moduleResolution": "node",
     "rootDir": "./src",
@@ -16,7 +16,7 @@
     "jsx": "react",
     "esModuleInterop": true,
     "lib": [
-      "es2015",
+      "esnext",
       "dom"
     ],
     "experimentalDecorators": true,
