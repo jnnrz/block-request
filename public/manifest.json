@@ -3,7 +3,7 @@
   "name": "block-request",
   "description": "Blocks images, media (video, audio, etc) and javascript",
   "author": "Johann Perozo",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "browser_action": {
     "default_popup": "popup.html",
     "default_icon": {
