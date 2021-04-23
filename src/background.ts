@@ -5,12 +5,12 @@ import {
   Storage,
 } from "webextension-polyfill-ts";
 import { checkFavIcon, checkMedia } from "./utils";
-import StorageChange = Storage.StorageChange;
+import { parse } from "url";
 
 let isImagesBlocked = false;
 let isMediaBlocked = false;
 let isJavascriptBlocked = false;
-let whitelist = [];
+let wl = [];
 
 const main = () => {
   browser.runtime.onInstalled.addListener(onInstall);
@@ -39,6 +39,14 @@ const main = () => {
 };
 
 const onRequest = async (details: WebRequest.OnHeadersReceivedDetailsType) => {
+  const parsedUrl = parse(details.documentUrl);
+  const found = wl.includes(parsedUrl.hostname);
+
+  if (found) {
+    console.log(found);
+    return { cancel: false };
+  }
+
   if (isMediaBlocked) {
     if (details.type === "media" || checkMedia(details.url)) {
       console.log("media: " + details.url);
@@ -73,7 +81,7 @@ const onInstall = async (details: Runtime.OnInstalledDetailsType) => {
 };
 
 const onStorageChange = async (
-  changes: { [p: string]: StorageChange },
+  changes: { [p: string]: Storage.StorageChange },
   areaName: string
 ) => {
   await reloadStorage();
@@ -81,12 +89,13 @@ const onStorageChange = async (
 
 const reloadStorage = async () => {
   const { status } = await browser.storage.local.get("status");
-  const { wl } = await browser.storage.local.get("whitelist");
+  const { whitelist } = await browser.storage.local.get("whitelist");
 
   isImagesBlocked = status.images;
   isMediaBlocked = status.media;
   isJavascriptBlocked = status.js;
-  whitelist = wl;
+  console.log(whitelist);
+  wl = whitelist ? whitelist : [];
 };
 
 main();
