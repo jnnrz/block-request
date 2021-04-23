@@ -84,25 +84,20 @@ const onRequest = async (details: WebRequest.OnHeadersReceivedDetailsType) => {
     }
   }
 
-  if (blockImage || blockJs) {
+  if (blockImage) {
     if (details.type === "image" || details.type === "imageset") {
+      console.log("image: " + details.url);
       return { cancel: true };
     }
+  }
 
+  if (blockJs) {
     const headers = details.responseHeaders;
-    const cspHeader = headers.filter(
-      (header) => header.name.toLowerCase() === "content-security-policy"
-    );
+    headers.push({
+      name: "Content-Security-Policy",
+      value: "script-src 'none';",
+    });
 
-    const previousValue = cspHeader.length > 0 ? cspHeader[0].value : "";
-
-    const newCsp = `${blockImage ? "img-src 'none'; " : ""} ${
-      blockJs ? "script-src 'none'; " : ""
-    } ${previousValue}`;
-
-    console.log(`${newCsp}: ${details.url}`);
-
-    headers.push({ name: "Content-Security-Policy", value: newCsp });
     return { responseHeaders: headers };
   }
 };
