@@ -1,6 +1,6 @@
 {
   "name": "block-request",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "Block Request",
   "main": "src/index.ts",
   "scripts": {
