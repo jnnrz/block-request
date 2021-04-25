@@ -1,5 +1,4 @@
 import { browser, Tabs } from "webextension-polyfill-ts";
-import { parse, UrlWithStringQuery } from "url";
 
 export const checkFavIcon = (url: string): boolean => {
   return containsWords(url, ["favicon", "favicons"]);
@@ -23,11 +22,11 @@ const containsWords = (str: string, words: string[]): boolean => {
 };
 
 export const getActiveTab = async (): Promise<Tabs.Tab> => {
-  const tabs = await browser.tabs.query({ active: true }); //getCurrent();
+  const tabs = await browser.tabs.query({ active: true });
   return tabs[0];
 };
 
-export const getUrlFromActiveTab = async (): Promise<UrlWithStringQuery> => {
+export const getUrlFromActiveTab = async (): Promise<URL> => {
   const activeTab = await getActiveTab();
-  return parse(activeTab.url);
+  return new URL(activeTab.url);
 };
