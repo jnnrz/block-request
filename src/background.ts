@@ -5,7 +5,6 @@ import {
   Storage,
 } from "webextension-polyfill-ts";
 import { checkFavIcon, checkMedia } from "./utils";
-import { parse } from "url";
 
 let isImagesBlocked = false;
 let isMediaBlocked = false;
@@ -25,11 +24,8 @@ const main = () => {
         "xmlhttprequest",
         "image",
         "media",
-        "websocket",
         "imageset",
-        "other",
         "script",
-        "stylesheet",
         "main_frame",
         "sub_frame",
       ],
@@ -39,8 +35,11 @@ const main = () => {
 };
 
 const onRequest = async (details: WebRequest.OnHeadersReceivedDetailsType) => {
-  const parsedUrl = parse(details.documentUrl);
-  const found = wl.includes(parsedUrl.hostname);
+  const host = new URL(details.url).hostname;
+  const headers = details.responseHeaders;
+
+  // Check if host is on the whitelist
+  const found = wl.includes(host);
 
   if (found) {
     return { cancel: false };
@@ -65,7 +64,6 @@ const onRequest = async (details: WebRequest.OnHeadersReceivedDetailsType) => {
   }
 
   if (isJavascriptBlocked) {
-    const headers = details.responseHeaders;
     headers.push({
       name: "Content-Security-Policy",
       value: "script-src 'none';",
