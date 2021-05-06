@@ -23,8 +23,8 @@ const main = () => {
       types: [
         "xmlhttprequest",
         "image",
-        "media",
         "imageset",
+        "media",
         "script",
         "main_frame",
         "sub_frame",
@@ -40,37 +40,32 @@ const onRequest = async (details: WebRequest.OnHeadersReceivedDetailsType) => {
 
   // Check if host is on the whitelist
   const found = wl.includes(host);
+  let csp = "";
 
   if (found) {
-    return { cancel: false };
+    return { responseHeaders: details.responseHeaders };
   }
 
   if (isMediaBlocked) {
     if (details.type === "media" || checkMedia(details.url)) {
-      console.log("media: " + details.url);
       return { cancel: true };
     }
   }
 
   if (isImagesBlocked) {
-    if (details.type === "image" || details.type === "imageset") {
-      if (checkFavIcon(details.url)) {
-        return { cancel: false };
-      }
-
-      console.log("image: " + details.url);
-      return { cancel: true };
-    }
+    csp += " img-src 'none';";
   }
 
   if (isJavascriptBlocked) {
-    headers.push({
-      name: "Content-Security-Policy",
-      value: "script-src 'none';",
-    });
-
-    return { responseHeaders: headers };
+    csp += " script-src 'none';";
   }
+
+  headers.push({
+    name: "Content-Security-Policy",
+    value: csp,
+  });
+
+  return { responseHeaders: headers };
 };
 
 const onInstall = async (details: Runtime.OnInstalledDetailsType) => {
