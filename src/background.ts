@@ -1,22 +1,21 @@
-import {
-  browser,
+import Browser, {
   Runtime,
   WebRequest,
   Storage,
-} from "webextension-polyfill-ts";
-import { checkFavIcon, checkMedia } from "./utils";
+} from "webextension-polyfill";
+import { checkMedia } from "./utils";
 
 let isImagesBlocked = false;
 let isMediaBlocked = false;
 let isJavascriptBlocked = false;
-let wl = [];
+let wl: Array<string>;
 
 const main = () => {
-  browser.runtime.onInstalled.addListener(onInstall);
+  Browser.runtime.onInstalled.addListener(onInstall);
 
-  browser.storage.onChanged.addListener(onStorageChange);
+  Browser.storage.onChanged.addListener(onStorageChange);
 
-  browser.webRequest.onHeadersReceived.addListener(
+  Browser.webRequest.onHeadersReceived.addListener(
     onRequest,
     {
       urls: ["<all_urls>"],
@@ -80,8 +79,8 @@ const onStorageChange = async (
 };
 
 const reloadStorage = async () => {
-  const { status } = await browser.storage.local.get("status");
-  const { whitelist } = await browser.storage.local.get("whitelist");
+  const { status } = await Browser.storage.local.get("status");
+  const { whitelist } = await Browser.storage.local.get("whitelist");
 
   isImagesBlocked = status.images;
   isMediaBlocked = status.media;

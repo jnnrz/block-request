@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useState, useEffect } from "react";
-import { browser } from "webextension-polyfill-ts";
+import Browser from "webextension-polyfill";
 import { Toggle } from "react-toggle-component";
 import { getUrlFromActiveTab } from "@src/utils";
 
@@ -18,8 +18,8 @@ const Popup: FunctionComponent = () => {
   const [whitelist, setWhitelist] = useState<string[]>([]);
 
   useEffect(async () => {
-    const { status } = await browser.storage.local.get("status");
-    const { whitelist } = await browser.storage.local.get("whitelist");
+    const { status } = await Browser.storage.local.get("status");
+    const { whitelist } = await Browser.storage.local.get("whitelist");
 
     setBlockImages(status.images);
     setBlockMedia(status.media);
@@ -32,8 +32,8 @@ const Popup: FunctionComponent = () => {
   }, []);
 
   const handleBlockImages = async () => {
-    const { status } = await browser.storage.local.get("status");
-    await browser.storage.local.set({
+    const { status } = await Browser.storage.local.get("status");
+    await Browser.storage.local.set({
       ["status"]: { ...status, images: !blockImages },
     });
 
@@ -41,16 +41,16 @@ const Popup: FunctionComponent = () => {
   };
 
   const handleBlockMedia = async () => {
-    const { status } = await browser.storage.local.get("status");
-    await browser.storage.local.set({
+    const { status } = await Browser.storage.local.get("status");
+    await Browser.storage.local.set({
       ["status"]: { ...status, media: !blockMedia },
     });
     setBlockMedia(!blockMedia);
   };
 
   const handleBlockJavascript = async () => {
-    const { status } = await browser.storage.local.get("status");
-    await browser.storage.local.set({
+    const { status } = await Browser.storage.local.get("status");
+    await Browser.storage.local.set({
       ["status"]: { ...status, js: !blockJavascript },
     });
     setBlockJavascript(!blockJavascript);
@@ -66,14 +66,14 @@ const Popup: FunctionComponent = () => {
         const filteredList: string[] = whitelist.filter(
           (el) => el !== parsedUrl.hostname
         );
-        await browser.storage.local.set({ ["whitelist"]: [...filteredList] });
+        await Browser.storage.local.set({ ["whitelist"]: [...filteredList] });
         setOnWhitelist(!onWhitelist);
         return;
       }
     }
 
     const newWhitelist = [...whitelist, parsedUrl.hostname];
-    await browser.storage.local.set({ ["whitelist"]: newWhitelist });
+    await Browser.storage.local.set({ ["whitelist"]: newWhitelist });
     setOnWhitelist(!onWhitelist);
   };
 
